@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/list', 'ProductController@showList')->name('list');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
