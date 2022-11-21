@@ -7,6 +7,7 @@
     <div class="navbar-nav">
       <a class="nav-item nav-link active" href="#">ドリンク一覧 <span class="sr-only"></span></a>
       <a class="nav-item nav-link" href="#">商品投稿</a>
+      <a class="nav-item nav-link" href="{{ url('/home') }}">ログイン画面</a>
     </div>
   </div>
 </nav>

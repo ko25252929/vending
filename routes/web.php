@@ -15,7 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//ブログ一覧画面を表示
 Route::get('/list', 'ProductController@showList')->name('list');
+
+//ブログ詳細画面を表示
+
+Route::get('/product/{id}', 'ProductController@showDetail')->name('show');
 
 Auth::routes();
 
