@@ -17,4 +17,8 @@ class Product extends Model
         'comment',	
         'img_path'
     ];
+    public function deleteProductById($id)
+    {
+        return $this->destroy($id);
+    }
 }

@@ -15,13 +15,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//ブログ一覧画面を表示
-Route::get('/list', 'ProductController@showList')->name('list');
+//一覧画面
+Route::get('/home', 'HomeController@index')->name('home');
 
-//ブログ詳細画面を表示
+//投稿フォーム
+Route::get('/product/create', 'ProductController@showCreate')->name('create');
 
-Route::get('/product/{id}', 'ProductController@showDetail')->name('show');
+//投稿登録
+Route::post('/product/store', 'ProductController@exeStore')->name('store');
+
+//削除処理
+Route::post('home/destroy{id}',[ProductController::class, 'destroy'])->name('product.destroy');
+
+//詳細画面を表示
+Route::get('product/{id}', 'ProductController@showDetail')->name('show');
+
+//編集画面
+Route::get('<product><edit>{id}', 'ProductController@showEdit')->name('edit');
+Route::post('/product/update', 'ProductController@exeUpdate')->name('update');
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

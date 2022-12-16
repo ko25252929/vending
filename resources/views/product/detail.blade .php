@@ -10,14 +10,12 @@
  
 <div class="row">
     <div class="col-md-10 col-md-offset-2">
-        <h2>{{$product->title}}</h2>
-        <span>{{$product->product-name}}</span>
-        <span>{{$product->price }}</span>
-        <span>{{$product->stock}}</span>
-        <span>{{$product->img_path}}</span>
-        <span>{{$product->comment}}</span>
-        <span>{{$product->created_at}}</span>
-        <span>{{$product->updated_at}}</span>
+        <td>{{ $product->id }}</td>
+        <td>{{ $product->img_path }}</td>
+        <td>{{ $product->product_name }}</td>
+        <td>{{ $product->price }}円</td>
+        <th>{{ $product->stock }}</td>
+        <td>{{ $product->company_id}}</td>
     </div>
 </div>
 @endsection
