@@ -24,10 +24,11 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'product_name',
-            'price' ,
-            'stock' ,
-            'comment'
+            'product_name' => 'required | max:255',
+            'company_id' => 'required',
+            'price' => 'required',
+            'stock' => 'required',
+            'img_path' => 'required' | str_replace('public/', 'storage/', $product->img_path),
         ];
     }
 }

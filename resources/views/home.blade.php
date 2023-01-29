@@ -66,21 +66,29 @@
             @foreach($products as $product)
             <tr>
                 <td>{{ $product->id }}</td>
-                <td>{{ $product->img_path }}</td>
+                <td><img src="{{asset('storage/images'.$product->img_path)}}" style="height:300px"></td>
                 <td><a href="/product/{{ $product->id }}">{{ $product->product_name }}</a></td>
                 <td>{{ $product->price }}円</td>
                 <th>{{ $product->stock }}</td>
                 <td>{{ $product->company_id}}</td>
-                <td><button type="button" class="btn btn-primary" onclick="location.href='/product/edit/{{ $product->id }}'" >編集</button></td>
-                <td><form action="{{ route('product.destroy', ['id=>$product->product_id']) }}" method="POST">
-                    <button type="submit" class="btn btn-danger">削除</button>
-                    </form>
+                <td><button type="button" class="btn btn-primary" onclick="location.href='/product/{{$product->id}}'" >詳細</button></td>
+                
+                <td><form action="{{ route('delete', $product->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-danger" onclick=>削除</button>
+                 </form>
                 </td>
-
             </tr>
+            <!-- <form method="POST" action="{{ route('delete', $product->id) }}" onSubmit="return checkDelete()">
+                @csrf
+                <td><button type="submit" class="btn btn-danger" onclick=>削除</button><
+                </form>
+                /td>
+            </tr> -->
             @endforeach
         </table>
     </div>
 </div>
-@include('footer')
 @endsection
+
+  

@@ -1,16 +1,14 @@
-@extends('layout')
-@section('title','編集')
+@extends('layouts.app')
+@section('title',)
 @section('content')
 
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
-        <h2>商品編集フォーム</h2>
-        <form method="POST" action="{{ route('update') }}" onSubmit="return checkSubmit()">
+        <h2>商品登録フォーム</h2>
+        <form method="POST" action="{{ route('store') }}" enctype="multipart/form-data">
         @csrf
 
         <!--カンパニー -->
-            <input type="hidden" name="id" value="{{ $product->id }}">
-            
             <div class="form-group">
                 <label for="company_id">
                     メーカー
@@ -19,7 +17,7 @@
                     id="company_id"
                     name="company_id"
                     class="form-control"
-                    value="{{ $product->company_id }}"
+                    value="{{ old('company_id') }}"
                     select name="company_id"
                 >
                  <option value="1">コカ・コーラ</option>
@@ -43,7 +41,7 @@
                     id="product_name"
                     name="product_name"
                     class="form-control"
-                    value="{{ $product->product_name }}"
+                    value="{{ old('product_name') }}"
                     type="text"
                 >
                 @if ($errors->has('product_name'))
@@ -60,8 +58,9 @@
                     id="price"
                     name="price"
                     class="form-control"
-                    value="{{  $product->price  }}"
+                    value="{{ old('price') }}"
                     type="text"
+                >
                 @if ($errors->has('price'))
                     <div class="text-danger">
                         {{ $errors->first('price') }}
@@ -76,7 +75,7 @@
                     id="stock"
                     name="stock"
                     class="form-control"
-                    value="{{ $product->stock }}"
+                    value="{{ old('stock') }}"
                     type="text"
                 >
                     @if ($errors->has('stock'))
@@ -95,7 +94,7 @@
                     name="comment"
                     class="form-control"
                     rows="4"
-                >{{ $product->comment }}</textarea>
+                >{{ old('comment') }}</textarea>
                 @if ($errors->has('comment'))
                     <div class="comment">
                         {{ $errors->first('content') }}
@@ -111,24 +110,22 @@
                     id="img_path"
                     name="img_path"
                     class="form-control"
-                    value="{{ $product->img_path }}"
                     type="file"
                 >
                 @if ($errors->has('img_path'))
                     <div class="img_path">
-                        {{ $errors->first('product_name') }}
+                        {{ $errors->first('img_path') }}
                     </div>
                 @endif
 
-            <div class="mt-5"> 
-            <button type="submit" class="btn btn-primary">   
-            <a class="btn btn-secondary" href="{{
+            <div class="mt-5">   
+            <a class="btn btn-primary" href="{{
             route('home')}}">        
             戻る</a>
             </button>
 
                 <button type="submit" class="btn btn-primary">
-                    更新する
+                    投稿する
                 </button>
             </div>
         </form>
@@ -136,7 +133,7 @@
 </div>
 <script>
 function checkSubmit(){
-if(window.confirm('更新してよろしいですか？')){
+if(window.confirm('送信してよろしいですか？')){
     return true;
 } else {
     return false;

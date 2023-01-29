@@ -19,12 +19,12 @@ class ProductController extends Controller
     {
         
         $product = Product::find($id);
-
+      
         if (is_null($product)){
             \Session::flash('err_msg','データがありません。');
             return redirect(route('home'));
         }     
-        return view('product.detail', ['product' => $product]);
+        return view('detail', ['product' => $product]);
     }
 
      /**
@@ -32,24 +32,28 @@ class ProductController extends Controller
      * @return view
      */
     public function showCreate() {
-     return view('product.form');
+     return view('form');
     } 
 
      /**
      * 商品登録
      * @return view
      */
-    public function exeStore(ProductRequest $request) 
+    public function exeStore(Request $request) 
     {
-       $inputs = $request->all();
-       \DB::beginTransaction();
+   
+    $request->company_id;
+    $inputs = $request->all(); 
+   
 
-
-    
     /**画像をpublicに配置する為の処理 */
-     if(isset($request['img_path'])){
-        $inputs['img_path'] = $request['img_path']->store('public/images');
-}
+     if(request('img_path')){
+        
+        $filename = $request -> file('img_path');
+        $inputs['img_path'] = $filename -> storeAs('public/images', $filename);
+   
+    \DB::beginTransaction();
+    }
 
        try{
         Product::create($inputs);
@@ -76,7 +80,7 @@ class ProductController extends Controller
             \Session::flash('err_msg','データがありません。');
             return redirect(route('home'));
         }     
-        return view('product.edit', ['product' => $product]);
+        return view('edit', ['product' => $product]);
     }
 
       /**
@@ -88,12 +92,11 @@ class ProductController extends Controller
        $inputs = $request->all();
        \DB::beginTransaction();
     
-       dd($request);
+       
     /**画像をpublicに配置する為の処理 */
-    if(isset($request['img_path'])){
-        dd('test');
-        $name=request()->file("image")->getClientOriginalName();
-        $inputs['img_path'] = $request->file('image')->store('public/images/' . $name);
+    if(request('img_path')){
+        $filename = $request -> file('img_path');
+        $inputs['img_path'] = $filename -> storeAs('public/images', $filename);
     }
 
     /* *
@@ -103,11 +106,12 @@ class ProductController extends Controller
         $product = Product::find($inputs['id']);
         $product->fill([
             'id' => $inputs['id'],
-            'img_path' => $inputs['img_path'],
+            'company_id' => $inputs['company_id'],
             'product_name ' => $inputs['product_name '],
             'price' => $inputs['price'],
             'stock' => $inputs['stock'],
-            'company_id' => $inputs['company_id'],
+            'comment'=> $inputs['comment'],
+            'img_path' => $inputs['img_path'],
         ]);
         $product->save();
         \DB::commit();
@@ -118,13 +122,26 @@ class ProductController extends Controller
         \Session::flash('err_msg','商品を更新しました');
         return redirect(route('home'));
        }
-/* *
+     
+
+    /**
      * 削除処理
+     * @param int $id
+     * @return view
      */
-       public function destroy($id)
+       public function exeDelete($id)
        {
-        $product = Product::find($id);
-        $product->delete();
-        return redirect()->route('product.index');
+        if(empty($id)) {
+            \Session::flash('err_msg','データがありません。');
+           return redirect(route('home'));
+           
+        }
+        try{
+            Product::destroy($id);
+        }   catch(\Throwable $e) {
+                abort(500);
+        }
+           \Session::flash('err_msg','データ削除しました');
+           return redirect(route('home'));
        }
 }

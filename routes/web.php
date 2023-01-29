@@ -19,19 +19,20 @@ Route::get('/', function () {
 Route::get('/home', 'HomeController@index')->name('home');
 
 //投稿フォーム
-Route::get('/product/create', 'ProductController@showCreate')->name('create');
+Route::get('/create', 'ProductController@showCreate')->name('create');
 
 //投稿登録
-Route::post('/product/store', 'ProductController@exeStore')->name('store');
+Route::post('/store', 'ProductController@exeStore')->name('store');
 
-//削除処理
-Route::post('home/destroy{id}',[ProductController::class, 'destroy'])->name('product.destroy');
+
 
 //詳細画面を表示
-Route::get('product/{id}', 'ProductController@showDetail')->name('show');
+Route::get('/product/{id}', 'ProductController@showDetail')->name('detail');
 
 //編集画面
-Route::get('<product><edit>{id}', 'ProductController@showEdit')->name('edit');
-Route::post('/product/update', 'ProductController@exeUpdate')->name('update');
+Route::get('/edit/{id}', 'ProductController@showEdit')->name('edit');
+Route::post('update', 'ProductController@exeUpdate')->name('update');
 
+//削除処理
+Route::post('/delete/{id}', 'ProductController@exeDelete')->name('delete');
 Auth::routes();
