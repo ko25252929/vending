@@ -1,13 +1,13 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class company extends Model
+class Company extends Model
 {
+    public $timestamp = false;
     protected $table = 'companies';
-
     protected $fillable =
     [
         'company_name',
@@ -16,4 +16,9 @@ class company extends Model
         'created_at',	
         'updated_at'
     ];
+
+    public function Product()
+    {
+     return $this->hasMany('App\Models\Product');
+    }
 }

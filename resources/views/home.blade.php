@@ -28,16 +28,17 @@
         @endif
     
         
-
-        <input type="search" placeholder="ユーザー名を入力" name="search" value="@if (isset($search)) {{ $search }} @endif">
-        <div>
-            <button type="submit">検索</button>
-            <button>
-                    クリア
-                </a>
-            </button>
+      <form method="get" action="" class="form-inline">
+        <div class="form-group">
+            <input type="text" name="keyword" class="form-control" value="{{$products}}" placeholder="商品名を入力して下さい">
         </div>
-    </form>
+        <div class="form-group">
+            <input type="submit" value="検索" class="btn btn-info" style="margin-left: 15px; color:white;">
+         </div>
+        </form>
+
+        
+
 
 
     <select type="select_search" placeholder="会社名" name="select_search" value="@if (isset($search)) {{ $search }} @endif">
@@ -66,7 +67,7 @@
             @foreach($products as $product)
             <tr>
                 <td>{{ $product->id }}</td>
-                <td><img src="{{asset('storage/images'.$product->img_path)}}" style="height:300px"></td>
+                <td class="dbconect"><img src="{{asset(\Storage::url($product -> img_path))}}"alt="" class="products-image"  width="100" height="200"></td>
                 <td><a href="/product/{{ $product->id }}">{{ $product->product_name }}</a></td>
                 <td>{{ $product->price }}円</td>
                 <th>{{ $product->stock }}</td>
@@ -79,12 +80,6 @@
                  </form>
                 </td>
             </tr>
-            <!-- <form method="POST" action="{{ route('delete', $product->id) }}" onSubmit="return checkDelete()">
-                @csrf
-                <td><button type="submit" class="btn btn-danger" onclick=>削除</button><
-                </form>
-                /td>
-            </tr> -->
             @endforeach
         </table>
     </div>

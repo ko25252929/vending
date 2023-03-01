@@ -5,9 +5,8 @@
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <h2>商品編集フォーム</h2>
-        <form method="POST" action="{{ route('update') }}"  enctype="multipart/form-data">
+        <form method="POST" action="{{ route('update',$product) }}"  enctype="multipart/form-data">
         @csrf
-
         <!--カンパニー -->
             <input type="hidden" name="id" value="{{ $product->id }}">
             
@@ -27,6 +26,7 @@
                  <option value="3">アサヒ飲料</option>
                  <option value="4">キリン</option>
                  <option value="5">伊藤園</option>
+                 
                 </select>
                 @if ($errors->has('company_id'))
                     <div class="text-danger">
@@ -122,8 +122,7 @@
                 @endif
 
            <div class="mt-5">   
-            <a class="btn btn-primary" href="{{
-            route('home')}}">        
+            <a class="btn btn-primary" onclick="location.href='/product/{{$product->id}}'">        
             戻る</a>
             </button>
                 <button type="submit" class="btn btn-primary">
@@ -133,6 +132,7 @@
         </form>
     </div>
 </div>
+@endsection
 <script>
 function checkSubmit(){
 if(window.confirm('更新してよろしいですか？')){
@@ -142,4 +142,3 @@ if(window.confirm('更新してよろしいですか？')){
 }
 }
 </script>
-@endsection

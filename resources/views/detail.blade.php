@@ -35,7 +35,7 @@
 <div class="row">
     <div class="col-md-10 col-md-offset-2">
         <td>{{ $product->id }}</td>
-        <td><img src="{{ asset ($product->img_path) }}"></td>
+        <td class="dbconect"><img src="{{asset(\Storage::url($product -> img_path))}}"alt="" class="products-image"  width="100" height="200"></td>
         <td>{{ $product->product_name }}</td>
         <td>{{ $product->company_id}}</td>
         <td>{{ $product->price }}円</td>

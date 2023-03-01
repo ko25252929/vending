@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Sales;
+use App\Models\Company;
 use App\Http\Requests\ProductRequest;
 use App\Models\Home;
+use App\Models\User;
 
 class ProductController extends Controller
 {
@@ -32,6 +35,7 @@ class ProductController extends Controller
      * @return view
      */
     public function showCreate() {
+     $companies = $this->company_id->get();
      return view('form');
     } 
 
@@ -41,30 +45,33 @@ class ProductController extends Controller
      */
     public function exeStore(Request $request) 
     {
-   
-    $request->company_id;
-    $inputs = $request->all(); 
-   
 
-    /**画像をpublicに配置する為の処理 */
-     if(request('img_path')){
-        
-        $filename = $request -> file('img_path');
-        $inputs['img_path'] = $filename -> storeAs('public/images', $filename);
-   
-    \DB::beginTransaction();
-    }
+        $request->company_id;
+        $inputs = $request->all(); 
+
+        /**画像をpublicに配置する為の処理 */
+        if(request('img_path')){
+            
+            $filename = $request -> file('img_path');
+            $inputs['img_path'] = $filename -> storeAs('public/images', $filename);
+      
+        \DB::beginTransaction();
+        }
 
        try{
         Product::create($inputs);
         \DB::commit();
        } catch(\Throwable $e) {
             \DB::rollback();
+            dd($e);
             abort(500);
        }
         \Session::flash('err_msg','商品登録しました');
         return redirect(route('home'));
-       } 
+    } 
+
+
+
     
     /**
      * 商品編集
@@ -83,20 +90,24 @@ class ProductController extends Controller
         return view('edit', ['product' => $product]);
     }
 
+
+
+
       /**
-     * 商品更新する
+     * 商品編集更新
      * @return view
      */
     public function exeUpdate(ProductRequest $request) 
     {
        $inputs = $request->all();
-       \DB::beginTransaction();
+        dd($inputs);
     
-       
     /**画像をpublicに配置する為の処理 */
     if(request('img_path')){
         $filename = $request -> file('img_path');
         $inputs['img_path'] = $filename -> storeAs('public/images', $filename);
+
+        \DB::beginTransaction();
     }
 
     /* *
@@ -112,15 +123,16 @@ class ProductController extends Controller
             'stock' => $inputs['stock'],
             'comment'=> $inputs['comment'],
             'img_path' => $inputs['img_path'],
-        ]);
-        $product->save();
-        \DB::commit();
-       } catch(\Throwable $e) {
-            \DB::rollback();
-            abort(500);
-       }
-        \Session::flash('err_msg','商品を更新しました');
-        return redirect(route('home'));
+            ]);
+
+            $product->save();
+            \DB::commit();
+            } catch(\Throwable $e) {
+                \DB::rollback();
+                abort(500);
+            }
+            \Session::flash('err_msg','商品を更新しました');
+            return redirect(route('home'));
        }
      
 
@@ -134,7 +146,6 @@ class ProductController extends Controller
         if(empty($id)) {
             \Session::flash('err_msg','データがありません。');
            return redirect(route('home'));
-           
         }
         try{
             Product::destroy($id);
