@@ -7,32 +7,21 @@
         <h2>商品編集フォーム</h2>
         <form method="POST" action="{{ route('update',$product) }}"  enctype="multipart/form-data">
         @csrf
+        @method('patch')
         <!--カンパニー -->
-            <input type="hidden" name="id" value="{{ $product->id }}">
-            
-            <div class="form-group">
-                <label for="company_id">
-                    メーカー
-                </label>
-                <select
-                    id="company_id"
-                    name="company_id"
-                    class="form-control"
-                    value="{{ $product->company_id }}"
-                    select name="company_id"
-                >
-                 <option value="1">コカ・コーラ</option>
-                 <option value="2">サントリー</option>
-                 <option value="3">アサヒ飲料</option>
-                 <option value="4">キリン</option>
-                 <option value="5">伊藤園</option>
-                 
-                </select>
-                @if ($errors->has('company_id'))
+        <div class="form-group">
+            <label for="company-id">{{_('メーカー')}}</label>        
+            <select class="form-control" id="company_id" name="company_id">
+                @foreach ($companies as $company)
+                    <option value="{{ $company->id }}"selected="selected">{{ $company->company_name }}</option>
+                @endforeach
+             </select>
+                @if($errors -> has('company_id'))
                     <div class="text-danger">
-                        {{ $errors->first('company_id') }}
+                    {{ $errors -> first('company_id') }}
                     </div>
                 @endif
+        </div>
                 
         <!--商品名 -->
             <div class="form-group">
@@ -104,6 +93,14 @@
                 @endif
             </div>
         <!--画像-->
+                    <div>
+                        @if($company->image !=='')
+                        <img src="{{\Storage::url($product -> img_path)}}"height="10%" width="10%">
+                        @else
+                        <img src="{{\Storage::url($product -> no_img_path)}}">
+                        @endif
+                    </div>
+
             <div class="form-group">
                 <label for="img_path">
                 商品画像
@@ -115,6 +112,8 @@
                     value="{{ $product->img_path }}"
                     type="file"
                 >
+               
+
                 @if ($errors->has('img_path'))
                     <div class="img_path">
                         {{ $errors->first('img_path') }}

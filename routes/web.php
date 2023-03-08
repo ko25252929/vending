@@ -31,7 +31,7 @@ Route::get('/product/{id}', 'ProductController@showDetail')->name('detail');
 
 //編集画面
 Route::get('/edit/{id}', 'ProductController@showEdit')->name('edit');
-Route::post('/update', 'ProductController@exeUpdate')->name('update');
+Route::match(['post','patch'],'update', 'ProductController@exeUpdate')->name('update');
 
 //削除処理
 Route::post('/delete/{id}', 'ProductController@exeDelete')->name('delete');

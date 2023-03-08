@@ -27,7 +27,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $products = Product::all();  
+        $products = Product::all(); 
+        
         return view('home', compact('products'));
         
         $keyword = $rp->input("keyword");

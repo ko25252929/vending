@@ -35,8 +35,8 @@ class ProductController extends Controller
      * @return view
      */
     public function showCreate() {
-     $companies = $this->company_id->get();
-     return view('form');
+     $companies = Company::all();
+     return view('form', compact('companies'));
     } 
 
      /**
@@ -74,40 +74,43 @@ class ProductController extends Controller
 
     
     /**
-     * 商品編集
+     * 商品編集フォームを表示する
      * @param int $id
      * @return view
      */
     public function showEdit($id) 
     {
-        
         $product = Product::find($id);
-
+        $companies= Company::all();
+        
         if (is_null($product)){
             \Session::flash('err_msg','データがありません。');
             return redirect(route('home'));
         }     
-        return view('edit', ['product' => $product]);
+        return view('edit', compact('product','companies'));
     }
 
 
 
 
       /**
-     * 商品編集更新
+     * 編集から商品を更新する
      * @return view
      */
     public function exeUpdate(ProductRequest $request) 
     {
+        //データを受け取る
        $inputs = $request->all();
-        dd($inputs);
+       $product = Product::find(1);
     
     /**画像をpublicに配置する為の処理 */
     if(request('img_path')){
-        $filename = $request -> file('img_path');
+        // $filename = $request -> file('img_path');
+        \Storage::disk('public')->delete($inputs);
         $inputs['img_path'] = $filename -> storeAs('public/images', $filename);
 
         \DB::beginTransaction();
+        return view('edit', compact('product'));
     }
 
     /* *

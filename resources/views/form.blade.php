@@ -23,23 +23,6 @@
                 @endif
         </div>
 
-                        <!-- <label for="company_id">メーカー</label>
-                            <select class="form-control" id="company_id" name="company_id">
-                            @foreach ($companies as $company)
-                            @if ($product -> id === $company -> id )
-                                <option value="{{ $company -> id }}" selected="selected">{{ $company -> company_name }}</option>
-                            @else
-                                <option value ="{{$company -> id}}">{{ $company -> company_name }}</option>
-                            @endif
-                            @endforeach
-                            </select>
-                            @if($errors -> has('company_id'))
-                                <div class="text-danger">
-                                    {{ $errors -> first('company_id') }}
-                                </div>
-                            @endif
-                        </div>f  -->
-
                 
         <!--商品名 -->
             <div class="form-group">
