@@ -42,7 +42,10 @@
 
 
     <select type="select_search" placeholder="会社名" name="select_search" value="@if (isset($search)) {{ $search }} @endif">
-    <option value="">メーカー名を選択してください</option>
+        @foreach ($companies as $company)
+        <option value="{{ $company->id }}"selected="selected">{{ $company->company_name }}</option>
+        @endforeach
+        <option value="">メーカー名を選択してください</option>
     </select> 
     <div>
             <button type="submit">検索</button>

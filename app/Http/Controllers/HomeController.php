@@ -28,11 +28,13 @@ class HomeController extends Controller
     public function index()
     {
         $products = Product::all(); 
+        $companies = Company::all();
         
-        return view('home', compact('products'));
+        return view('home', compact('products','companies'));
         
         $keyword = $rp->input("keyword");
         $query = \APP\Student::query();
+
 
         if(!empty($keyword))
         {
@@ -45,5 +47,15 @@ class HomeController extends Controller
         return view('home')->with('product',$products)->with('keyword',$keyword);
         
     }
+
+    // public function search(Request $request)
+    // {
+
+        
+    //     $keyword = $request->input('keyword');
+    //     $products = Product::where('name', 'LIKE', "%$keyword%")->get();
+    
+    //     return view('home');
+    // }
    
 }

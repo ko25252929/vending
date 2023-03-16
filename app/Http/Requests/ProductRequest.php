@@ -28,7 +28,7 @@ class ProductRequest extends FormRequest
             'company_id' => 'required',
             'price' => 'required',
             'stock' => 'required',
-            'img_path' => 'required' | str_replace('public/', 'storage/', $product->img_path),
+            'img_path' => 'required',
         ];
     }
 }

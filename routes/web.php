@@ -18,6 +18,7 @@ Route::get('/', function () {
 //一覧画面
 Route::get('/home', 'HomeController@index')->name('home');
 
+
 //投稿フォーム
 Route::get('/create', 'ProductController@showCreate')->name('create');
 

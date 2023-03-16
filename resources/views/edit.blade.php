@@ -8,6 +8,24 @@
         <form method="POST" action="{{ route('update',$product) }}"  enctype="multipart/form-data">
         @csrf
         @method('patch')
+
+         <!--ID -->
+         <div class="form-group">
+                <label for="product_name">
+                    id
+                </label>
+                <input
+                    id="id"
+                    name="id"
+                    class="form-control"
+                    value="{{ optional($product)->id }}"
+                    type="text"
+                >
+                @if ($errors->has('id'))
+                    <div class="text-danger">
+                        {{ $errors->first('id') }}
+                    </div>
+                @endif
         <!--カンパニー -->
         <div class="form-group">
             <label for="company-id">{{_('メーカー')}}</label>        
@@ -32,7 +50,7 @@
                     id="product_name"
                     name="product_name"
                     class="form-control"
-                    value="{{ $product->product_name }}"
+                    value="{{ optional($product)->product_name }}"
                     type="text"
                 >
                 @if ($errors->has('product_name'))
@@ -49,7 +67,7 @@
                     id="price"
                     name="price"
                     class="form-control"
-                    value="{{  $product->price  }}"
+                    value="{{ optional( $product)->price  }}"
                     type="text"
                 >
                 @if ($errors->has('price'))
@@ -66,7 +84,7 @@
                     id="stock"
                     name="stock"
                     class="form-control"
-                    value="{{ $product->stock }}"
+                    value="{{ optional($product)->stock }}"
                     type="text"
                 >
                     @if ($errors->has('stock'))
@@ -85,7 +103,7 @@
                     name="comment"
                     class="form-control"
                     rows="4"
-                >{{ $product->comment }}</textarea>
+                >{{ optional($product)->comment }}</textarea>
                 @if ($errors->has('comment'))
                     <div class="comment">
                         {{ $errors->first('content') }}
@@ -95,9 +113,9 @@
         <!--画像-->
                     <div>
                         @if($company->image !=='')
-                        <img src="{{\Storage::url($product -> img_path)}}"height="10%" width="10%">
+                        <img src="{{\Storage::url (optional($product) -> img_path)}}"height="10%" width="10%">
                         @else
-                        <img src="{{\Storage::url($product -> no_img_path)}}">
+                        <img src="{{\Storage::url (optional($product) -> no_img_path)}}">
                         @endif
                     </div>
 
@@ -109,7 +127,7 @@
                     id="img_path"
                     name="img_path"
                     class="form-control"
-                    value="{{ $product->img_path }}"
+                    value="{{ optional($product)->img_path }}"
                     type="file"
                 >
                
@@ -121,7 +139,7 @@
                 @endif
 
            <div class="mt-5">   
-            <a class="btn btn-primary" onclick="location.href='/product/{{$product->id}}'">        
+            <a class="btn btn-primary" onclick="location.href='/product/{{optional($product)->id}}'">        
             戻る</a>
             </button>
                 <button type="submit" class="btn btn-primary">

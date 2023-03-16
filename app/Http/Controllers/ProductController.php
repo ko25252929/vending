@@ -63,7 +63,6 @@ class ProductController extends Controller
         \DB::commit();
        } catch(\Throwable $e) {
             \DB::rollback();
-            dd($e);
             abort(500);
        }
         \Session::flash('err_msg','商品登録しました');
@@ -102,31 +101,32 @@ class ProductController extends Controller
         //データを受け取る
        $inputs = $request->all();
        $product = Product::find(1);
-    
-    /**画像をpublicに配置する為の処理 */
-    if(request('img_path')){
-        // $filename = $request -> file('img_path');
+       $companies= Company::all();
+
+       /**画像をpublicに配置する為の処理 */
+       if(request('img_path')){
+        $filename = $request -> file('img_path');
         \Storage::disk('public')->delete($inputs);
         $inputs['img_path'] = $filename -> storeAs('public/images', $filename);
-
-        \DB::beginTransaction();
-        return view('edit', compact('product'));
+       
     }
-
     /* *
      * 商品更新登録する
      */
-       try{
+        \DB::beginTransaction();
+    
         $product = Product::find($inputs['id']);
+        try{
         $product->fill([
             'id' => $inputs['id'],
             'company_id' => $inputs['company_id'],
-            'product_name ' => $inputs['product_name '],
+            'product_name' => $inputs['product_name'],
             'price' => $inputs['price'],
             'stock' => $inputs['stock'],
             'comment'=> $inputs['comment'],
             'img_path' => $inputs['img_path'],
             ]);
+
 
             $product->save();
             \DB::commit();
