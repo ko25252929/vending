@@ -2,6 +2,7 @@
 @section('title','編集')
 @section('content')
 
+
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <h2>商品編集フォーム</h2>
@@ -20,6 +21,7 @@
                     class="form-control"
                     value="{{ optional($product)->id }}"
                     type="text"
+                    readonly 
                 >
                 @if ($errors->has('id'))
                     <div class="text-danger">

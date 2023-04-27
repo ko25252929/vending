@@ -25,7 +25,7 @@ class Product extends Model
     }
 
     public function join(){ 
-    $product =product::product()
+    $product =Product::product()
     -> join('companies', 'products.company_id', '=', 'companies.id')
     ->select('products_id as product_id','companies.id as company_id','product_name','price',
              'stock','img_path','company_name');

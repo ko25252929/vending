@@ -108,7 +108,8 @@ class ProductController extends Controller
         $filename = $request -> file('img_path');
         \Storage::disk('public')->delete($inputs);
         $inputs['img_path'] = $filename -> storeAs('public/images', $filename);
-       
+       }else{ 
+        $inputs = null;
     }
     /* *
      * 商品更新登録する
@@ -116,8 +117,8 @@ class ProductController extends Controller
         \DB::beginTransaction();
     
         $product = Product::find($inputs['id']);
-        try{
-        $product->fill([
+        // try{
+        $product->update([
             'id' => $inputs['id'],
             'company_id' => $inputs['company_id'],
             'product_name' => $inputs['product_name'],
@@ -130,10 +131,11 @@ class ProductController extends Controller
 
             $product->save();
             \DB::commit();
-            } catch(\Throwable $e) {
-                \DB::rollback();
-                abort(500);
-            }
+            // } 
+            // catch(\Throwable $e) {
+            //     \DB::rollback();
+            //     abort(500);
+            // }
             \Session::flash('err_msg','商品を更新しました');
             return redirect(route('home'));
        }

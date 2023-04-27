@@ -31,31 +31,36 @@ class HomeController extends Controller
         $companies = Company::all();
         
         return view('home', compact('products','companies'));
+
+    }
         
-        $keyword = $rp->input("keyword");
-        $query = \APP\Student::query();
+
+    // 検索機能
+    public function search(Request $request)
+    {
+        $keyword = $request->input("keyword");
+        $select_search = $request->input("select_search");
+        
+        $query1 = Product::query();
+        $companies = Company::all();
 
 
         if(!empty($keyword))
         {
-            $query->where('product_name','like','%'.$keyword.'%');
-            $query->onWhere('company_name','like','%'.$keyword.'%');
-
+            $query1->where('product_name','like','%'.$keyword.'%');
         }
 
-        $products = $query->orderBy('id','desc')->paginate(5);
-        return view('home')->with('product',$products)->with('keyword',$keyword);
+        if(!empty($select_search))
+        {
+            $query1->where('company_id','like','%'.$select_search.'%');
+        }
         
+
+        $products = $query1->orderBy('id','desc')->paginate(5);
+       
+        return view('home',compact('products','companies','keyword','select_search'));
     }
 
-    // public function search(Request $request)
-    // {
-
-        
-    //     $keyword = $request->input('keyword');
-    //     $products = Product::where('name', 'LIKE', "%$keyword%")->get();
-    
-    //     return view('home');
-    // }
+  
    
 }
