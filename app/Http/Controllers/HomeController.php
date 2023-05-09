@@ -56,7 +56,7 @@ class HomeController extends Controller
         }
         
 
-        $products = $query1->orderBy('id','desc')->paginate(5);
+        $products = $query1->orderBy('id','desc')->paginate();
        
         return view('home',compact('products','companies','keyword','select_search'));
     }

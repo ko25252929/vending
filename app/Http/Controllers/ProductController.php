@@ -43,7 +43,7 @@ class ProductController extends Controller
      * 商品登録
      * @return view
      */
-    public function exeStore(Request $request) 
+    public function exeStore(ProductRequest $request) 
     {
 
         $request->company_id;
@@ -54,9 +54,11 @@ class ProductController extends Controller
             
             $filename = $request -> file('img_path');
             $inputs['img_path'] = $filename -> storeAs('public/images', $filename);
-      
-        \DB::beginTransaction();
+        }else{ 
+            $inputs['img_path']= null;
         }
+        \DB::beginTransaction();
+        
 
        try{
         Product::create($inputs);
@@ -109,7 +111,7 @@ class ProductController extends Controller
         \Storage::disk('public')->delete($inputs);
         $inputs['img_path'] = $filename -> storeAs('public/images', $filename);
        }else{ 
-        $inputs = null;
+        $inputs['img_path']= null;
     }
     /* *
      * 商品更新登録する
@@ -117,7 +119,7 @@ class ProductController extends Controller
         \DB::beginTransaction();
     
         $product = Product::find($inputs['id']);
-        // try{
+         try{
         $product->update([
             'id' => $inputs['id'],
             'company_id' => $inputs['company_id'],
@@ -131,11 +133,11 @@ class ProductController extends Controller
 
             $product->save();
             \DB::commit();
-            // } 
-            // catch(\Throwable $e) {
-            //     \DB::rollback();
-            //     abort(500);
-            // }
+            } 
+            catch(\Throwable $e) {
+                \DB::rollback();
+                abort(500);
+            }
             \Session::flash('err_msg','商品を更新しました');
             return redirect(route('home'));
        }
